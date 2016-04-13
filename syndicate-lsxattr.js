@@ -32,9 +32,9 @@ var utils = require('./utils.js');
         // read
         try {
             // try to open...
-            var xattrs = syndicate.listxattr(ug, param.path);
+            var xattrs = syndicate.list_xattr(ug, param.path);
             xattrs.forEach(function (key) {
-                var value = syndicate.getxattr(ug, param.path, key);
+                var value = syndicate.get_xattr(ug, param.path, key);
                 console.log("Xattr " + key + " : " + value);
             });
         } catch (ex) {
