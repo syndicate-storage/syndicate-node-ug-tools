@@ -20,9 +20,12 @@ var utils = require('./utils.js');
 
 (function main() {
     var args = process.argv.slice(1);
+    // last argument is the key string
+    var key = args[args.length - 1]
+    args = args.slice(0,-1)
     var param = utils.parse_args(args);
 
-    console.log("syndicate-lsxattr.js");
+    console.log("syndicate-getxattr.js");
     console.log("param: " + JSON.stringify(param));
     try {
         var opts = syndicate.create_opts(param.user, param.volume, param.gateway, param.anonymous);
@@ -31,12 +34,8 @@ var utils = require('./utils.js');
 
         // read
         try {
-            // try to open...
-            var xattrs = syndicate.list_xattr(ug, param.path);
-            xattrs.forEach(function (key) {
-                var value = syndicate.get_xattr(ug, param.path, key);
-                console.log("Xattr " + key + " : " + value);
-            });
+            var value = syndicate.get_xattr(ug, param.path, key);
+            console.log("Xattr " + key + " : " + value);
         } catch (ex) {
             console.error("Exception occured : " + ex);
         }
