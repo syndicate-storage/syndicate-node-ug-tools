@@ -17,51 +17,25 @@
 
 var syndicate = require('syndicate-drive');
 var utils = require('./utils.js');
-var fs = require('fs');
-
-var BUF_SIZE = 1024 * 1024 * 10;
 
 (function main() {
     var args = process.argv.slice(1);
-    // last argument is the syndicate-path
-    var syndicate_path = args[args.length - 1]
-    args = args.slice(0,-1)
     var param = utils.parse_args(args);
 
-    console.log("syndicate-put.js");
+    console.log("syndicate-refresh.js");
     console.log("param: " + JSON.stringify(param));
     try {
         var opts = syndicate.create_opts(param.user, param.volume, param.gateway, param.anonymous, param.debug_level);
         // init UG
         var ug = syndicate.init(opts);
 
-        // try to open a local file
-        var lfh = fs.openSync(param.path, "r");
-
-        // try to open...
-        var fh = syndicate.open(ug, syndicate_path, "w");
-
-        // var buffer
-        var buffer = new Buffer(BUF_SIZE);
-        // write
+        // refresh
         try {
-            while(1) {
-                var bytesRead = fs.readSync(lfh, buffer, 0, BUF_SIZE, null);
-                if(bytesRead > 0) {
-                    syndicate.write(ug, fh, buffer.slice(0, bytesRead));
-                } else {
-                    // EOF
-                    break;
-                }
-            }
+            syndicate.refresh(ug, param.path);
+            console.log(param.path + " is refreshed");
         } catch (ex) {
             console.error("Exception occured : " + ex);
         }
-
-        // close
-        syndicate.close(ug, fh);
-
-        fs.closeSync(lfh);
 
         // shutdown UG
         syndicate.shutdown(ug);

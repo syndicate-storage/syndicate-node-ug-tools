@@ -1,6 +1,6 @@
 #!/bin/env node
 /*
-   Copyright 2015 The Trustees of Princeton University
+   Copyright 2016 The Trustees of Princeton University
 
    Licensed under the Apache License, Version 2.0 (the "License" );
    you may not use this file except in compliance with the License.
@@ -17,51 +17,45 @@
 
 var syndicate = require('syndicate-drive');
 var utils = require('./utils.js');
-var fs = require('fs');
-
-var BUF_SIZE = 1024 * 1024 * 10;
 
 (function main() {
     var args = process.argv.slice(1);
-    // last argument is the syndicate-path
-    var syndicate_path = args[args.length - 1]
-    args = args.slice(0,-1)
     var param = utils.parse_args(args);
 
-    console.log("syndicate-put.js");
+    console.log("syndicate-coord.js");
     console.log("param: " + JSON.stringify(param));
     try {
         var opts = syndicate.create_opts(param.user, param.volume, param.gateway, param.anonymous, param.debug_level);
         // init UG
         var ug = syndicate.init(opts);
+        // get gateway id
+        var gid = syndicate.get_gateway_id(ug);
 
-        // try to open a local file
-        var lfh = fs.openSync(param.path, "r");
-
-        // try to open...
-        var fh = syndicate.open(ug, syndicate_path, "w");
-
-        // var buffer
-        var buffer = new Buffer(BUF_SIZE);
-        // write
+        // stat
         try {
-            while(1) {
-                var bytesRead = fs.readSync(lfh, buffer, 0, BUF_SIZE, null);
-                if(bytesRead > 0) {
-                    syndicate.write(ug, fh, buffer.slice(0, bytesRead));
-                } else {
-                    // EOF
-                    break;
+            var stat = syndicate.stat_raw(ug, param.path);
+            if(!stat.isFile()) {
+                console.error("Not a file: " + param.path);
+            } else {
+                // if we're not the coordinator, become it
+                if(stat.coordinator !== gid) {
+                   console.log("Become the coordinator of '" + param.path + "'");
+                   var new_coord = syndicate.chcoord(ug, param.path);
                 }
+
+                // proceed to handle requests
+                console.log("Proceed to handle requests");
+                /*
+                rc = UG_main( ug );
+                if( rc != 0 ) {
+                   fprintf(stderr, "UG_main: %s\n", strerror(-rc) );
+                   rc = 1;
+                }
+                */
             }
         } catch (ex) {
             console.error("Exception occured : " + ex);
         }
-
-        // close
-        syndicate.close(ug, fh);
-
-        fs.closeSync(lfh);
 
         // shutdown UG
         syndicate.shutdown(ug);
