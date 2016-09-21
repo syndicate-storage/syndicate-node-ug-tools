@@ -54,6 +54,8 @@ var BUF_SIZE = 1024 * 1024 * 10;
                     break;
                 }
             }
+
+            syndicate.fsync(ug, fh);
         } catch (ex) {
             console.error("Exception occured : " + ex);
         }
