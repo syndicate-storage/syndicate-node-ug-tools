@@ -29,15 +29,19 @@ var utils = require('./utils.js');
         // init UG
         var ug = syndicate.init(opts);
 
-        // read
-        try {
-            // try to open...
-            var xattrs = syndicate.list_xattr(ug, param.path);
-            xattrs.forEach(function (key) {
-                console.log("Xattr key : " + key);
-            });
-        } catch (ex) {
-            console.error("Exception occured : " + ex);
+        var i;
+        for(i=0;i<param.path.length;i++) {
+            var path = param.path[i];
+            // read
+            try {
+                // try to open...
+                var xattrs = syndicate.list_xattr(ug, path);
+                xattrs.forEach(function (key) {
+                    console.log("Xattr key : " + key);
+                });
+            } catch (ex) {
+                console.error("Exception occured : " + ex);
+            }
         }
 
         // shutdown UG

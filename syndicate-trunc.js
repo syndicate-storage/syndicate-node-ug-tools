@@ -20,9 +20,6 @@ var utils = require('./utils.js');
 
 (function main() {
     var args = process.argv.slice(1);
-    // last argument is the size
-    var size = Number(args[args.length - 1])
-    args = args.slice(0,-1)
     var param = utils.parse_args(args);
 
     console.log("syndicate-trunc.js");
@@ -32,12 +29,17 @@ var utils = require('./utils.js');
         // init UG
         var ug = syndicate.init(opts);
 
-        // truncate
-        try {
-            syndicate.truncate(ug, param.path, size);
-            console.log("Truncated " + param.path + " to size " + size);
-        } catch (ex) {
-            console.error("Exception occured : " + ex);
+        var i;
+        for(i=0;i<param.path.length;i+=2) {
+            var path = param.path[i];
+            var size = Number(param.path[i+1]);
+            // truncate
+            try {
+                syndicate.truncate(ug, path, size);
+                console.log("Truncated " + path + " to size " + size);
+            } catch (ex) {
+                console.error("Exception occured : " + ex);
+            }
         }
 
         // shutdown UG

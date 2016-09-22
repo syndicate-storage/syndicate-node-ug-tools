@@ -25,7 +25,7 @@ module.exports = {
             gateway: "",
             debug_level: 0,
             anonymous: false,
-            path: ""
+            path: []
         };
 
         // parse
@@ -77,7 +77,7 @@ module.exports = {
             }
 
             if(!args[i].startsWith("-")) {
-                options.path = args[i];
+                options.path.push(args[i]);
             }
         }
 

@@ -20,10 +20,6 @@ var utils = require('./utils.js');
 
 (function main() {
     var args = process.argv.slice(1);
-    // last two arguments are the key string and the value string
-    var key = args[args.length - 2]
-    var value = args[args.length - 1]
-    args = args.slice(0,-2)
     var param = utils.parse_args(args);
 
     console.log("syndicate-setxattr.js");
@@ -33,12 +29,18 @@ var utils = require('./utils.js');
         // init UG
         var ug = syndicate.init(opts);
 
-        // write
-        try {
-            syndicate.set_xattr(ug, param.path, key, value);
-            console.log("Xattr " + key + " : " + value + " is set");
-        } catch (ex) {
-            console.error("Exception occured : " + ex);
+        var path = param.path[0];
+        var i;
+        for(i=1;i<param.path.length;i+=2) {
+            var key = param.path[i];
+            var value = param.path[i+1];
+            // write
+            try {
+                syndicate.set_xattr(ug, path, key, value);
+                console.log("Xattr " + key + " : " + value + " is set");
+            } catch (ex) {
+                console.error("Exception occured : " + ex);
+            }
         }
 
         // shutdown UG

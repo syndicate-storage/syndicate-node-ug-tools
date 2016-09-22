@@ -29,12 +29,16 @@ var utils = require('./utils.js');
         // init UG
         var ug = syndicate.init(opts);
 
-        // rmdir
-        try {
-            syndicate.rmdir(ug, param.path);
-            console.log(param.path + " is removed");
-        } catch (ex) {
-            console.error("Exception occured : " + ex);
+        var i;
+        for(i=0;i<param.path.length;i++) {
+            var path = param.path[i];
+            // rmdir
+            try {
+                syndicate.rmdir(ug, path);
+                console.log(path + " is removed");
+            } catch (ex) {
+                console.error("Exception occured : " + ex);
+            }
         }
 
         // shutdown UG

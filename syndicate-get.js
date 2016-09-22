@@ -17,12 +17,15 @@
 
 var syndicate = require('syndicate-drive');
 var utils = require('./utils.js');
+var fs = require('fs');
+
+var BUF_SIZE = 1024 * 1024 * 10;
 
 (function main() {
     var args = process.argv.slice(1);
     var param = utils.parse_args(args);
 
-    console.log("syndicate-stat.js");
+    console.log("syndicate-put.js");
     console.log("param: " + JSON.stringify(param));
     try {
         var opts = syndicate.create_opts(param.user, param.volume, param.gateway, param.anonymous, param.debug_level);
@@ -30,17 +33,38 @@ var utils = require('./utils.js');
         var ug = syndicate.init(opts);
 
         var i;
-        for(i=0;i<param.path.length;i++) {
-            var path = param.path[i];
-            // stat
+        for(i=0;i<param.path.length;i+=2) {
+            var syndicate_path = param.path[i];
+            var local_path = param.path[i+1];
+            // try to open a local file
+            var lfh = fs.openSync(local_path, "w");
+
+            // try to open...
+            var fh = syndicate.open(ug, syndicate_path, "r");
+
+            // read
             try {
-                var stat = syndicate.stat_raw(ug, path);
-                console.log(JSON.stringify(stat));
+                while(1) {
+                    var buffer = syndicate.read(ug, fh, BUF_SIZE);
+                    if(buffer) {
+                        if(buffer.length > 0) {
+                            fs.writeSync(lfh, buffer, 0, buffer.length);
+                        } else {
+                            // EOF
+                            break;
+                        }
+                    }
+                }
             } catch (ex) {
                 console.error("Exception occured : " + ex);
+                break;
             }
-        }
 
+            // close
+            syndicate.close(ug, fh);
+
+            fs.closeSync(lfh);
+        }
         // shutdown UG
         syndicate.shutdown(ug);
     } catch (e) {

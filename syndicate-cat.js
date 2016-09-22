@@ -29,26 +29,31 @@ var utils = require('./utils.js');
         // init UG
         var ug = syndicate.init(opts);
 
-        // try to open...
-        var fh = syndicate.open(ug, param.path, "r");
+        var i;
+        for(i=0;i<param.path.length;i++) {
+            var path = param.path[i];
+            // try to open...
+            var fh = syndicate.open(ug, path, "r");
 
-        // read
-        try {
-            while(1) {
-                var buf = syndicate.read(ug, fh, 1024*64);
-                if(buf.length > 0) {
-                    process.stdout.write(buf);
-                } else {
-                    // EOF
-                    break;
+            // read
+            try {
+                while(1) {
+                    var buf = syndicate.read(ug, fh, 1024*64);
+                    if(buf.length > 0) {
+                        process.stdout.write(buf);
+                    } else {
+                        // EOF
+                        break;
+                    }
                 }
+            } catch (ex) {
+                console.error("Exception occured : " + ex);
+                break;
             }
-        } catch (ex) {
-            console.error("Exception occured : " + ex);
-        }
 
-        // close
-        syndicate.close(ug, fh);
+            // close
+            syndicate.close(ug, fh);
+        }
 
         // shutdown UG
         syndicate.shutdown(ug);

@@ -31,30 +31,34 @@ var utils = require('./utils.js');
         // get gateway id
         var gid = syndicate.get_gateway_id(ug);
 
-        // stat
-        try {
-            var stat = syndicate.stat_raw(ug, param.path);
-            if(!stat.isFile()) {
-                console.error("Not a file: " + param.path);
-            } else {
-                // if we're not the coordinator, become it
-                if(stat.coordinator !== gid) {
-                   console.log("Become the coordinator of '" + param.path + "'");
-                   var new_coord = syndicate.chcoord(ug, param.path);
-                }
+        var i;
+        for(i=0;i<param.path.length;i++) {
+            var path = param.path[i];
+            // stat
+            try {
+                var stat = syndicate.stat_raw(ug, path);
+                if(!stat.isFile()) {
+                    console.error("Not a file: " + path);
+                } else {
+                    // if we're not the coordinator, become it
+                    if(stat.coordinator !== gid) {
+                       console.log("Become the coordinator of '" + path + "'");
+                       var new_coord = syndicate.chcoord(ug, path);
+                    }
 
-                // proceed to handle requests
-                console.log("Proceed to handle requests");
-                /*
-                rc = UG_main( ug );
-                if( rc != 0 ) {
-                   fprintf(stderr, "UG_main: %s\n", strerror(-rc) );
-                   rc = 1;
+                    // proceed to handle requests
+                    console.log("Proceed to handle requests");
+                    /*
+                    rc = UG_main( ug );
+                    if( rc != 0 ) {
+                       fprintf(stderr, "UG_main: %s\n", strerror(-rc) );
+                       rc = 1;
+                    }
+                    */
                 }
-                */
+            } catch (ex) {
+                console.error("Exception occured : " + ex);
             }
-        } catch (ex) {
-            console.error("Exception occured : " + ex);
         }
 
         // shutdown UG

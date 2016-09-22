@@ -29,13 +29,17 @@ var utils = require('./utils.js');
         // init UG
         var ug = syndicate.init(opts);
 
-        // create
-        try {
-            var fh = syndicate.create(ug, param.path, 0o0550);
-            // close
-            syndicate.close(ug, fh);
-        } catch (ex) {
-            console.error("Exception occured : " + ex);
+        var i;
+        for(i=0;i<param.path.length;i++) {
+            var path = param.path[i];
+            // create
+            try {
+                var fh = syndicate.create(ug, path, 0o0550);
+                // close
+                syndicate.close(ug, fh);
+            } catch (ex) {
+                console.error("Exception occured : " + ex);
+            }
         }
 
         // shutdown UG

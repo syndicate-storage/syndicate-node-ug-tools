@@ -20,10 +20,6 @@ var utils = require('./utils.js');
 
 (function main() {
     var args = process.argv.slice(1);
-    // last two arguments are the offset, len
-    var offset = Number(args[args.length - 2])
-    var len = Number(args[args.length - 1])
-    args = args.slice(0,-2)
     var param = utils.parse_args(args);
 
     console.log("syndicate-read.js");
@@ -33,30 +29,39 @@ var utils = require('./utils.js');
         // init UG
         var ug = syndicate.init(opts);
 
-        // try to open...
-        var fh = syndicate.open(ug, param.path, "r");
+        // last two arguments are the offset, len
+        var i;
+        for(i=0;i<param.path.length;i+=3) {
+            var path = param.path[i];
+            var offset = Number(param.path[i+1]);
+            var len = Number(param.path[i+2]);
 
-        var len_left = len
-        // seek & read
-        try {
-            syndicate.seek(ug, fh, offset);
+            // try to open...
+            var fh = syndicate.open(ug, path, "r");
 
-            while(1) {
-                var buf = syndicate.read(ug, fh, len_left);
-                if(buf.length > 0) {
-                    len_left -= buf.length;
-                    process.stdout.write(buf);
-                } else {
-                    // EOF
-                    break;
+            var len_left = len
+            // seek & read
+            try {
+                syndicate.seek(ug, fh, offset);
+
+                while(1) {
+                    var buf = syndicate.read(ug, fh, len_left);
+                    if(buf.length > 0) {
+                        len_left -= buf.length;
+                        process.stdout.write(buf);
+                    } else {
+                        // EOF
+                        break;
+                    }
                 }
+            } catch (ex) {
+                console.error("Exception occured : " + ex);
+                break;
             }
-        } catch (ex) {
-            console.error("Exception occured : " + ex);
-        }
 
-        // close
-        syndicate.close(ug, fh);
+            // close
+            syndicate.close(ug, fh);
+        }
 
         // shutdown UG
         syndicate.shutdown(ug);

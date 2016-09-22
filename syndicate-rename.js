@@ -20,9 +20,6 @@ var utils = require('./utils.js');
 
 (function main() {
     var args = process.argv.slice(1);
-    // last argument is the dest path
-    var dest = args[args.length - 1]
-    args = args.slice(0,-1)
     var param = utils.parse_args(args);
 
     console.log("syndicate-rename.js");
@@ -32,12 +29,17 @@ var utils = require('./utils.js');
         // init UG
         var ug = syndicate.init(opts);
 
-        // rename
-        try {
-            syndicate.rename(ug, param.path, dest);
-            console.log("Renamed " + param.path + " to " + dest);
-        } catch (ex) {
-            console.error("Exception occured : " + ex);
+        var i;
+        for(i=0;i<param.path.length;i+=2) {
+            var src_path = param.path[i];
+            var dest_path = param.path[i+1];
+            // rename
+            try {
+                syndicate.rename(ug, src_path, dest_path);
+                console.log("Renamed " + src_path + " to " + dest_path);
+            } catch (ex) {
+                console.error("Exception occured : " + ex);
+            }
         }
 
         // shutdown UG

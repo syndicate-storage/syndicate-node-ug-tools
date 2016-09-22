@@ -29,13 +29,17 @@ var utils = require('./utils.js');
         // init UG
         var ug = syndicate.init(opts);
 
-        // vacuum
-        try {
-            var vctx = syndicate.vacuum_begin(ug, param.path);
-            console.log("Vacuuming " + param.path);
-            syndicate.vacuum_wait(vctx);
-        } catch (ex) {
-            console.error("Exception occured : " + ex);
+        var i;
+        for(i=0;i<param.path.length;i++) {
+            var path = param.path[i];
+            // vacuum
+            try {
+                var vctx = syndicate.vacuum_begin(ug, path);
+                console.log("Vacuuming " + path);
+                syndicate.vacuum_wait(vctx);
+            } catch (ex) {
+                console.error("Exception occured : " + ex);
+            }
         }
 
         // shutdown UG

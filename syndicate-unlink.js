@@ -29,12 +29,16 @@ var utils = require('./utils.js');
         // init UG
         var ug = syndicate.init(opts);
 
-        // unlink
-        try {
-            syndicate.unlink(ug, param.path);
-            console.log(param.path + " is removed");
-        } catch (ex) {
-            console.error("Exception occured : " + ex);
+        var i;
+        for(i=0;i<param.path.length;i++) {
+            var path = param.path[i];
+            // unlink
+            try {
+                syndicate.unlink(ug, path);
+                console.log(path + " is removed");
+            } catch (ex) {
+                console.error("Exception occured : " + ex);
+            }
         }
 
         // shutdown UG

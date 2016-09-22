@@ -29,12 +29,16 @@ var utils = require('./utils.js');
         // init UG
         var ug = syndicate.init(opts);
 
-        // refresh
-        try {
-            syndicate.refresh(ug, param.path);
-            console.log(param.path + " is refreshed");
-        } catch (ex) {
-            console.error("Exception occured : " + ex);
+        var i;
+        for(i=0;i<param.path.length;i++) {
+            var path = param.path[i];
+            // refresh
+            try {
+                syndicate.refresh(ug, path);
+                console.log(path + " is refreshed");
+            } catch (ex) {
+                console.error("Exception occured : " + ex);
+            }
         }
 
         // shutdown UG

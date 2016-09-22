@@ -29,12 +29,16 @@ var utils = require('./utils.js');
         // init UG
         var ug = syndicate.init(opts);
 
-        // rmdir
-        try {
-            syndicate.mkdir(ug, param.path, ~process.umask() & 0o0777);
-            console.log(param.path + " is created");
-        } catch (ex) {
-            console.error("Exception occured : " + ex);
+        var i;
+        for(i=0;i<param.path.length;i++) {
+            var path = param.path[i];
+            // rmdir
+            try {
+                syndicate.mkdir(ug, path, ~process.umask() & 0o0777);
+                console.log(path + " is created");
+            } catch (ex) {
+                console.error("Exception occured : " + ex);
+            }
         }
 
         // shutdown UG

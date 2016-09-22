@@ -29,25 +29,29 @@ var utils = require('./utils.js');
         // init UG
         var ug = syndicate.init(opts);
 
-        // stat
-        try {
-            var stat = syndicate.stat_raw(ug, param.path);
-            if(stat.isFile()) {
-                console.log("file: " + JSON.stringify(stat));
-            } else if(stat.isDir()) {
-                console.log("directory: " + JSON.stringify(stat));
-                var entries = syndicate.list_dir(ug, param.path);
-                console.log("directory '" + param.path + "' has " + entries.length + " entries");
-                entries.forEach(function (stat) {
-                    if(stat.isFile()) {
-                        console.log("file: " + JSON.stringify(stat));
-                    } else if(stat.isDir()) {
-                        console.log("directory: " + JSON.stringify(stat));
-                    }
-                });
+        var i;
+        for(i=0;i<param.path.length;i++) {
+            var path = param.path[i];
+            // stat
+            try {
+                var stat = syndicate.stat_raw(ug, path);
+                if(stat.isFile()) {
+                    console.log("file: " + JSON.stringify(stat));
+                } else if(stat.isDir()) {
+                    console.log("directory: " + JSON.stringify(stat));
+                    var entries = syndicate.list_dir(ug, path);
+                    console.log("directory '" + path + "' has " + entries.length + " entries");
+                    entries.forEach(function (stat) {
+                        if(stat.isFile()) {
+                            console.log("file: " + JSON.stringify(stat));
+                        } else if(stat.isDir()) {
+                            console.log("directory: " + JSON.stringify(stat));
+                        }
+                    });
+                }
+            } catch (ex) {
+                console.error("Exception occured : " + ex);
             }
-        } catch (ex) {
-            console.error("Exception occured : " + ex);
         }
 
         // shutdown UG
