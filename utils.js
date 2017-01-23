@@ -24,7 +24,6 @@ module.exports = {
             volume: "",
             gateway: "",
             debug_level: 0,
-            anonymous: false,
             path: []
         };
 
@@ -68,11 +67,6 @@ module.exports = {
             var debug_level_match = args[i].match(/^(-d)(\d+)/i);
             if(debug_level_match !== null) {
                 options.debug_level = parseInt(debug_level_match[2]);
-                continue;
-            }
-
-            if(args[i] === "--anonymous" || args[i] === "-A") {
-                options.anonymous = true;
                 continue;
             }
 

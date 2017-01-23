@@ -28,7 +28,7 @@ var BUF_SIZE = 4096;
     console.log("syndicate-write.js");
     console.log("param: " + JSON.stringify(param));
     try {
-        var opts = syndicate.create_opts(param.user, param.volume, param.gateway, param.anonymous, param.debug_level);
+        var opts = syndicate.create_opts(param.user, param.volume, param.gateway, param.debug_level);
         // init UG
         var ug = syndicate.init(opts);
 
