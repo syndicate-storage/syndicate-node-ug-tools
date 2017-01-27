@@ -14,6 +14,8 @@
    limitations under the License.
 */
 
+var minimist = require('minimist');
+
 /**
  * Expose root class
  */
@@ -27,54 +29,17 @@ module.exports = {
             path: []
         };
 
+        // skip first two args
+        // 1: node
+        // 2: *.js script
+        var argv = minimist(args.slice(2));
+
         // parse
-        // start from 1, [0] is "syndicate-ls.js"
-        var i;
-        for(i=1;i<args.length;i++) {
-            if(args[i] === "-u") {
-                if(i+1 < args.length) {
-                    options.user = args[i+1];
-                    i++;
-                }
-                continue;
-            }
-
-            if(args[i] === "-v") {
-                if(i+1 < args.length) {
-                    options.volume = args[i+1];
-                    i++;
-                }
-                continue;
-            }
-
-            if(args[i] === "-g") {
-                if(i+1 < args.length) {
-                    options.gateway = args[i+1];
-                    i++;
-                }
-                continue;
-            }
-
-            if(args[i] === "-d") {
-                if(i+1 < args.length) {
-                    options.debug_level = parseInt(args[i+1]);
-                    i++;
-                }
-                continue;
-            }
-
-            // parse pattern "-d2"
-            var debug_level_match = args[i].match(/^(-d)(\d+)/i);
-            if(debug_level_match !== null) {
-                options.debug_level = parseInt(debug_level_match[2]);
-                continue;
-            }
-
-            if(!args[i].startsWith("-")) {
-                options.path.push(args[i]);
-            }
-        }
-
+        options.user = argv.u || "";
+        options.volume = argv.v || "";
+        options.gateway = argv.g || "";
+        options.debug_level = argv.d || 0;
+        options.path = argv._;
         return options;
     }
 };

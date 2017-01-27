@@ -22,8 +22,7 @@ var fs = require('fs');
 var BUF_SIZE = 4096;
 
 (function main() {
-    var args = process.argv.slice(1);
-    var param = utils.parse_args(args);
+    var param = utils.parse_args(process.argv);
 
     console.log("syndicate-write.js");
     console.log("param: " + JSON.stringify(param));

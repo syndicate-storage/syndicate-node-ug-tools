@@ -19,7 +19,10 @@
     "type": "git",
     "url": "https://github.com/syndicate-storage/syndicate-node-ug-tools.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "syndicate-drive": "latest",
+    "minimist": "latest"
+  },
   "devDependencies": {},
   "bin": {
     "syndicate-node-cat": "syndicate-cat.js",
