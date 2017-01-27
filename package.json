@@ -1,0 +1,46 @@
+{
+  "name": "syndicate-drive-ug-tools",
+  "version": "0.1.0",
+  "description": "Syndicate drive UG tools",
+  "keywords": [
+    "syndicate",
+    "syndicate-drive",
+    "fs",
+    "filesystem",
+    "UG"
+  ],
+  "author": {
+    "name": "Illyoung Choi",
+    "email": "iychoi@email.arizona.edu",
+    "url": "https://github.com/syndicate-storage/syndicate-node-ug-tools.git"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/syndicate-storage/syndicate-node-ug-tools.git"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "bin": {
+    "syndicate-node-cat": "syndicate-cat.js",
+    "syndicate-node-coord": "syndicate-coord.js",
+    "syndicate-node-get": "syndicate-get.js",
+    "syndicate-node-getxattr": "syndicate-getxattr.js",
+    "syndicate-node-listxattr": "syndicate-listxattr.js",
+    "syndicate-node-ls": "syndicate-ls.js",
+    "syndicate-node-mkdir": "syndicate-mkdir.js",
+    "syndicate-node-put": "syndicate-put.js",
+    "syndicate-node-read": "syndicate-read.js",
+    "syndicate-node-refresh": "syndicate-refresh.js",
+    "syndicate-node-removexattr": "syndicate-removexattr.js",
+    "syndicate-node-rename": "syndicate-rename.js",
+    "syndicate-node-rmdir": "syndicate-rmdir.js",
+    "syndicate-node-setxattr": "syndicate-setxattr.js",
+    "syndicate-node-stat": "syndicate-stat.js",
+    "syndicate-node-touch": "syndicate-touch.js",
+    "syndicate-node-trunc": "syndicate-trunc.js",
+    "syndicate-node-unlink": "syndicate-unlink.js",
+    "syndicate-node-vacuum": "syndicate-vacuum.js",
+    "syndicate-node-write": "syndicate-write.js"
+  }
+}

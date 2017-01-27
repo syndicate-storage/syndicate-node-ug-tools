@@ -45,7 +45,7 @@ var utils = require('./utils.js');
                 syndicate.seek(ug, fh, offset);
 
                 while(1) {
-                    var buf = syndicate.read(ug, fh, len_left);
+                    var buf = syndicate.read(ug, fh, Math.min(len_left, 1024*64));
                     if(buf.length > 0) {
                         len_left -= buf.length;
                         process.stdout.write(buf);

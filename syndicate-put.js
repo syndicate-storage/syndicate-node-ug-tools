@@ -19,7 +19,7 @@ var syndicate = require('syndicate-drive');
 var utils = require('./utils.js');
 var fs = require('fs');
 
-var BUF_SIZE = 1024 * 1024 * 10;
+var BUF_SIZE = 1024 * 1024; // 1MB
 
 (function main() {
     var args = process.argv.slice(1);
