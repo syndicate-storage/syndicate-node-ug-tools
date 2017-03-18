@@ -33,7 +33,7 @@ var utils = require('./utils.js');
             var path = param.path[i];
             // rmdir
             try {
-                syndicate.mkdir(ug, path, ~process.umask() & 0o0777);
+                syndicate.mkdir(ug, path, ~process.umask() & parseInt("0777", 8));
                 console.log(path + " is created");
             } catch (ex) {
                 console.error("Exception occured : " + ex);
