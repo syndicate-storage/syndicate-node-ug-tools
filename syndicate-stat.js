@@ -15,7 +15,7 @@
    limitations under the License.
 */
 
-var syndicate = require('syndicate-drive');
+var syndicate = require('syndicate-storage');
 var utils = require('./utils.js');
 
 (function main() {

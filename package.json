@@ -1,10 +1,10 @@
 {
-  "name": "syndicate-drive-ug-tools",
+  "name": "syndicate-storage-ug-tools",
   "version": "0.1.3",
-  "description": "Syndicate drive UG tools",
+  "description": "Syndicate storage UG tools",
   "keywords": [
     "syndicate",
-    "syndicate-drive",
+    "syndicate-storage",
     "fs",
     "filesystem",
     "UG"
@@ -20,7 +20,7 @@
     "url": "https://github.com/syndicate-storage/syndicate-node-ug-tools.git"
   },
   "dependencies": {
-    "syndicate-drive": "latest",
+    "syndicate-storage": "latest",
     "minimist": "latest"
   },
   "devDependencies": {},
